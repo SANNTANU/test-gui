@@ -1,0 +1,211 @@
+<form [formGroup]="createEmployeeForm" (ngSubmit)="onSubmit(createEmployeeForm.value)" class="create-employee-div">
+  <p-panel header="Create New Employee">
+    <p-fieldset legend="Personal Details">
+      <div class="p-grid">
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <label class="label-required">Full Name</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <label class="label-required">Employee Code</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <label class="label-required">Date Of Joining</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <input pInputText type="text" formControlName="employeeName" name="firstname" placeholder="Required" />
+          <p-message severity="error"
+            [text]="createEmployeeForm.controls['employeeName'].errors['required'] ? 'Name is required' : createEmployeeForm.controls['employeeName'].errors['pattern'] ? 'Name is not correct' : '' "
+            *ngIf="!createEmployeeForm.controls['employeeName'].valid&&createEmployeeForm.controls['employeeName'].dirty">
+          </p-message>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <input pInputText type="text" formControlName="employeeCode" placeholder="Required" />
+          <p-message severity="error"
+            [text]="createEmployeeForm.controls.employeeCode.errors?.required ? 'Employee Code is required' : createEmployeeForm.controls.employeeCode.errors?.pattern ? 'Employee Code is not correct' : createEmployeeForm.controls.employeeCode.errors?.employeeCodeExists ? 'Employee Code already exists' : ''"
+            *ngIf="!createEmployeeForm.controls.employeeCode.valid&&createEmployeeForm.controls.employeeCode.dirty">
+          </p-message>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <p-calendar [monthNavigator]="true" [yearNavigator]="true" [maxDate]="maxDate"
+            yearRange="{{year - 1}}:{{year}}" formControlName="dateOfJoining" dateFormat="dd/mm/yy" required>
+          </p-calendar>
+        </div>
+      </div>
+
+      <br />
+
+      <div class="p-grid">
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <label>Email</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <label>Phone</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <label class="label-required">Designation</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <input pInputText type="email" formControlName="employeeEmail" />
+          <p-message severity="error"
+            [text]="createEmployeeForm.controls['employeeEmail'].errors?.email ? 'Email is not correct' : ''"
+            *ngIf="!createEmployeeForm.controls['employeeEmail'].valid&&createEmployeeForm.controls['employeeEmail'].dirty">
+          </p-message>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <input pInputText type="text" formControlName="employeePhone">
+          <p-message severity="error"
+            [text]="createEmployeeForm.controls['employeePhone'].errors?.pattern ? 'Phone No. is not correct' : createEmployeeForm.controls['employeePhone'].errors?.minlength ? 'Phone No. must be greater than 10 digits' : createEmployeeForm.controls['employeePhone'].errors?.maxLength ? 'Phone No. must be less than 12 digits' : ''"
+            *ngIf="!createEmployeeForm.controls['employeePhone'].valid&&createEmployeeForm.controls['employeePhone'].dirty">
+          </p-message>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <p-dropdown [options]="designationSelect" formControlName="designationMstId" placeholder="Required" required>
+          </p-dropdown>
+        </div>
+      </div>
+
+      <br />
+
+      <div class="p-grid">
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <label class="label-required">Department</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <label class="label-required">Employee Shift</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <label class="label-required">Leave Eligibility</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <p-dropdown [options]="departmentSelect" formControlName="departmentMstId" placeholder="Required" required>
+          </p-dropdown>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <p-dropdown [options]="workingShiftSelect" formControlName="workingShift" placeholder="Required" required>
+          </p-dropdown>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="{{year - 1}}:{{year}}"
+            formControlName="leaveApplicableDateTime" dateFormat="dd/mm/yy" required>
+          </p-calendar>
+        </div>
+      </div>
+    </p-fieldset>
+
+    <p-fieldset legend="Account Details">
+      <div class="p-grid">
+        <div class="p-sm-12 p-md-2 p-lg-2 p-xl-2 lbl-padding">
+          <label class="label-required">Account No.</label>
+        </div>
+
+        <div class="p-sm-12 p-md-4 p-lg-4 p-xl-4">
+          <input pInputText type="text" formControlName="accountNo" required />
+          <p-message severity="error"
+            [text]="createEmployeeForm.controls.accountNo.errors?.required ? 'Account No. is required' : createEmployeeForm.controls.accountNo.errors?.pattern ? 'Account No. is not correct' : createEmployeeForm.controls.accountNo.errors?.accountNoExists ? 'Account No. already exists' : createEmployeeForm.controls.accountNo.errors?.minlength ? 'Account No. must be greater than 6 digits' : 'Account No. must be less than 18 digits'"
+            *ngIf="!createEmployeeForm.controls.accountNo.valid&&createEmployeeForm.controls.accountNo.dirty">
+          </p-message>
+        </div>
+      </div>
+    </p-fieldset>
+
+    <p-fieldset legend="Salary Details" styleClass="margin-top-div">
+      <div class="p-grid">
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6 lbl-padding">
+          <label class="label-required">Gross Salary</label>
+        </div>
+
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6">
+          <input pInputText type="text" formControlName="grossSalaryAmount" placeholder="Required" />
+          <p-message severity="error"
+            [text]="createEmployeeForm.controls['grossSalaryAmount'].errors?.required ? 'Gross Salary is required' : createEmployeeForm.controls['grossSalaryAmount'].errors?.pattern ? 'Gross Salary is not correct' : createEmployeeForm.controls['grossSalaryAmount'].errors?.minlength ? 'Gross Salary must be greater than 4 digits' : 'Gross Salary must be less than 6 digits' "
+            *ngIf="!createEmployeeForm.controls['grossSalaryAmount'].valid&&createEmployeeForm.controls['grossSalaryAmount'].dirty">
+          </p-message>
+        </div>
+
+        <br /><br /><br /><br />
+
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6">
+          <label>Is PF Applicable</label>
+        </div>
+
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6">
+          <label>PF A/C No.</label>
+        </div>
+
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6">
+          <p-checkbox binary="true" formControlName="isPFApplicable"></p-checkbox>
+        </div>
+
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6">
+          <input pInputText type="text" formControlName="pfAcNo" />
+          <p-message severity="error"
+            [text]="createEmployeeForm.controls['pfAcNo'].errors?.pattern ? 'PF A/C No. is not correct' : createEmployeeForm.controls['pfAcNo'].errors?.minlength ? 'PF A/C No. must be greater than 10 digits' : createEmployeeForm.controls.pfAcNo.errors?.pfAccountNoExists ? 'PF A/C No. already exists' : 'PF A/C No. must be less than 12 digits'"
+            *ngIf="!createEmployeeForm.controls['pfAcNo'].valid&&(createEmployeeForm.controls['pfAcNo'].dirty || createEmployeeForm.controls['pfAcNo'].touched)">
+          </p-message>
+        </div>
+
+        <br /><br /><br /><br />
+
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6">
+          <label>Is ESI Applicable</label>
+        </div>
+
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6">
+          <label>ESI A/C No.</label>
+        </div>
+
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6">
+          <p-checkbox binary="true" formControlName="isESIApplicable"></p-checkbox>
+        </div>
+
+        <div class="p-sm-12 p-md-6 p-lg-6 p-xl-6">
+          <input pInputText type="text" formControlName="esiAcNo" />
+          <p-message severity="error"
+            [text]="createEmployeeForm.controls['esiAcNo'].errors?.pattern ? 'ESI A/C No. is not correct' : createEmployeeForm.controls['esiAcNo'].errors?.minlength ? 'ESI A/C No. must be greater than 10 digits' : createEmployeeForm.controls.esiAcNo.errors?.esiAccountNoExists ? 'ESI A/C No. already exists' : 'ESI A/C No. must be less than 17 digits'"
+            *ngIf="!createEmployeeForm.controls['esiAcNo'].valid&&createEmployeeForm.controls['esiAcNo'].dirty">
+          </p-message>
+        </div>
+      </div>
+    </p-fieldset>
+
+    <p-footer>
+      <button pButton type="submit" label="Submit" [disabled]="!createEmployeeForm.valid" icon="pi pi-save"
+        class="btn_submit"></button>
+    </p-footer>
+  </p-panel>
+</form>
+
+<!-- SUCCESS TOAST -->
+<p-toast key="success" position="center" [baseZIndex]="10000" [modal]="true" [autoZIndex]=true>
+  <ng-template let-message pTemplate="message">
+    <div style="text-align: center">
+      <i class="fa fa-info-circle" style="font-size: 3em"></i>
+      <h3>{{message.summary}}</h3>
+      <p>{{message.detail}}</p>
+    </div>
+
+    <hr />
+
+    <div class="dlg-footer">
+      <button type="button" pButton (click)="closeDialog()" label="OK"></button>
+    </div>
+  </ng-template>
+</p-toast>
+
+<!-- ERROR TOAST -->
+<p-toast key="error" position="center" [baseZIndex]="10000" [modal]="true" [autoZIndex]=true></p-toast>

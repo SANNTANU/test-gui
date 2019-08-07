@@ -1,0 +1,11 @@
+.create-employee-div{
+    margin: 0 auto;
+    padding: 20px 0 10px 0;
+    width: 95%;
+}
+.ui-calendar {    
+    display: block;
+}
+.lbl-padding{
+    padding: 15px;
+}
